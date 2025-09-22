@@ -1,0 +1,9 @@
+Referências utilizadas neste trabalho:
+
+> Bibliotecas
+  https://www.pygame.org/docs/
+  https://docs.python.org/3/library/math.html
+> Diagrama de Voronoi
+  https://www.inf.ufrgs.br/~comba/cmp189-files/class07.pdf
+> Mediatrizes (os pontos pertencentes a mediatriz são equidistantes das extremidades deste segmento => igual distância entre dois pontos)
+  https://pt.wikipedia.org/wiki/Mediatriz
