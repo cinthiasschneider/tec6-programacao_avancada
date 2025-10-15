@@ -5,6 +5,6 @@
 | --- | --- | --- | --- | --- |
 | 1 | 24/09 23:59 | 24/09/2025 16:19 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho1) | Sim |
 | 2 | 05/10 23:59 | 04/10/2025 10:42 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho2) | Sim |
-| 3 | 15/10 23:59 | preencher | [Link]() | preencher |
+| 3 | 18/10 23:59 | preencher | [Link]() | preencher |
 | 4 | 22/10 23:59 | preencher | [Link]() | preencher |
 
