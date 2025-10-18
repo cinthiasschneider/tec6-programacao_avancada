@@ -1,4 +1,5 @@
 Referências 
+
   https://en.wikipedia.org/wiki/Quickhull
   
   https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.ConvexHull.html
