@@ -1,5 +1,13 @@
 # código rodado no Google Colab para facilitar a utilização das bibliotecas matplotlib, seaborn e pandas.
 
+"""
+PERGUNTAS:
+Algoritmo de Envoltória Convexa escolhido?
+- Escolhi o algoritmo QuickHull por conveniência, já que ele já é utilizado na biblioteca SciPy como padrão para a função ConvexHull. 
+- Este algoritmo tem a característica de divisão e conquista, tendo uma complexidade de tempo média de 0(n log n).
+Existe diferença de custo computacional dependendo da distribuição de pontos?
+- Sim, quanto mais pontos são adicionados (no caso da opção 1 - clicar e criar pontos) ou no número fixo de pontos aleatórios, o custo computacional tende a ser maior.
+"""
 # importar as bibliotecas
 import pandas as pd
 import matplotlib.pyplot as plt
