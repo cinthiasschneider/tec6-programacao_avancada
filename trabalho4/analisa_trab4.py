@@ -1,3 +1,32 @@
+""" resultados
+--- ANÁLISE DE DESEMPENHO DA SOMA DE MINKOWSKI (TRABALHO 4) ---
+
+Estrutura dos dados (df.head()):
+             Timestamp  Modo  Vertices_P1  Vertices_O_Max  \
+0  2025-10-25 10:38:18     1            5               7   
+1  2025-10-25 10:38:30     1            5               7   
+2  2025-10-25 10:38:55     2            3               5   
+3  2025-10-25 10:39:39     2            3               5   
+4  2025-10-25 10:40:22     2            5               6   
+
+   Pontos_Soma_Gerados  Tempo_Minkowski_ms  
+0                   85              0.4713  
+1                   85              0.6247  
+2                   42              0.6221  
+3                   36              0.5662  
+4                   75              0.5889  
+
+Informações estatísticas do tempo (ms):
+count    16.000000
+mean      0.813931
+std       0.500058
+min       0.371100
+25%       0.502650
+50%       0.605500
+75%       1.036375
+max       2.235900
+"""
+
 # importando as bibliotecas necessárias
 import pandas as pd
 import matplotlib.pyplot as plt
