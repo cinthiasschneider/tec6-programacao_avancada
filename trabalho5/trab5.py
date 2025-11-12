@@ -142,9 +142,9 @@ def draw(win, grid, rows, width):
     
     text_info = "Pressione 'C' para limpar"
     if MODO_ESCOLHIDO == '1':
-        text_info = "Modo interativo mouse: origem/destino/barreiras | Espaço: 1 agente | G: múltiplos agentes| C: cimpar"
+        text_info = "Modo interativo mouse: origem/destino/barreiras | Espaço: 1 agente | G: múltiplos agentes| C: limpar"
     elif MODO_ESCOLHIDO == '2':
-        text_info = f"Modo procedural: {len(all_agents)} Agentes | C: cimpar"
+        text_info = f"Modo procedural: {len(all_agents)} Agentes | C: limpar"
 
     text_surface = FONT.render(text_info, True, BLACK)
     pygame.draw.rect(win, GREEN, (0, width, width, 30))
@@ -215,7 +215,7 @@ def generate_random_agents(grid, num_agents):
             agent.start.reset(); agent.end.reset()
             if agent.start in used_start: used_start.remove(agent.start)
             if agent.end in used_end: used_end.remove(agent.end)
-            print(f"Aviso: Caminho não encontrado para um agente. Descartado.")
+            print(f"Caminho não encontrado para um agente!")
             
     return valid_agents
 
