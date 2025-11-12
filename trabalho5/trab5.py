@@ -24,9 +24,12 @@ class Agente:
         result, came_from = algorithm(lambda: draw(WIN, grid, ROWS, WIDTH), grid, self.start, self.end, True)
         if result:
             path_list = []; current = self.end
-            while current in came_from:
+            while current in came_from and current != self.start:
                 current = came_from[current]; path_list.append(current)
-            path_list.pop()
+            
+            if path_list and path_list[-1] == self.start:
+                 path_list.pop()
+                 
             self.path = path_list; self.path_index = len(self.path) - 1
             self.running = True
             self.start.make_start(self.color); self.end.make_end(self.color)
@@ -71,7 +74,6 @@ class Celula:
         self.is_agent, self.agent_color, self.color = True, color, color
     def reset(self): 
         self.color = self.original_color = WHITE; self.is_agent = False
-    
     def draw(self, win):
         if self.is_agent:
             pygame.draw.circle(win, self.agent_color, (self.x + self.width // 2, self.y + self.width // 2), self.width // 2 - 2)
@@ -140,9 +142,9 @@ def draw(win, grid, rows, width):
     
     text_info = "Pressione 'C' para limpar"
     if MODO_ESCOLHIDO == '1':
-        text_info = "Modo interativo Mouse: Origem/Destino/Barreiras | Espaço: 1 Agente | G: Mais agentes| C: Limpar"
+        text_info = "Modo interativo mouse: origem/destino/barreiras | Espaço: 1 agente | G: múltiplos agentes| C: cimpar"
     elif MODO_ESCOLHIDO == '2':
-        text_info = "Modo procedural: | C: Limpar"
+        text_info = f"Modo procedural: {len(all_agents)} Agentes | C: cimpar"
 
     text_surface = FONT.render(text_info, True, BLACK)
     pygame.draw.rect(win, GREEN, (0, width, width, 30))
@@ -169,33 +171,53 @@ def save_session_log(log_data):
             if not file_exists or os.path.getsize(LOG_FILE) == 0:
                 writer.writerow(["Timestamp", "Modo", "Acao", "Detalhes"])
             writer.writerows(log_data)
-        print(f"\nLog de sessão salvo")
+        print(f"\nLog de sessão salvo com sucesso.")
     except Exception as e:
         print(f"Erro ao salvar o log: {e}")
 
 def generate_random_agents(grid, num_agents):
-    agents, colors = [], random.sample(AG_COLORS, min(num_agents, len(AG_COLORS)))
+    agents = []
+    colors = AG_COLORS 
     used_start, used_end = set(), set()
-    
-    for i in range(num_agents):
-        color = colors[i % len(colors)]
-        while True:
+    attempts_limit = 200 
+
+    while len(agents) < num_agents:
+        color = colors[len(agents) % len(colors)]
+        start_found = False
+        attempts = 0
+        while not start_found and attempts < attempts_limit:
             start, end = get_random_pos(grid), get_random_pos(grid)
+            
             if (not start.is_barrier() and not end.is_barrier() and start != end and
-                start not in used_start and end not in used_end):
+                start not in used_start and end not in used_end):              
                 used_start.add(start); used_end.add(end)
-                start.reset(); end.reset()
-                agents.append(Agente(start, end, color)); break
+                start.reset(); end.reset()              
+                agents.append(Agente(start, end, color))
+                start_found = True
+                break                
+            attempts += 1
+            
+        if not start_found:
+             print(f"Falha ao encontrar posições de oriegem/destino para o agente {len(agents) + 1} após {attempts_limit} tentativas")
+             break 
+             
+    valid_agents = []
     for agent in agents:
         for row in grid:
-            for spot in row: spot.update_neighbors(grid)
-        agent.find_path(grid)
-        for row in grid:
             for spot in row:
-                if spot.color in [RED, GREEN]: spot.reset() 
-        agent.start.make_start(agent.color)
-        agent.end.make_end(agent.color)
-    return agents
+                if spot.color in [RED, GREEN]: spot.reset()                 
+        if agent.find_path(grid):
+            valid_agents.append(agent)
+            for row in grid:
+                for spot in row:
+                    if spot.color in [RED, GREEN]: spot.reset()
+        else:
+            agent.start.reset(); agent.end.reset()
+            if agent.start in used_start: used_start.remove(agent.start)
+            if agent.end in used_end: used_end.remove(agent.end)
+            print(f"Aviso: Caminho não encontrado para um agente. Descartado.")
+            
+    return valid_agents
 
 # funções de input e modo
 def get_user_input(win, width, prompt):
@@ -255,39 +277,49 @@ def main(win, width):
     resultado_modo = escolher_modo_inicial(win, width)
     MODO_ESCOLHIDO = resultado_modo[0] if isinstance(resultado_modo, tuple) else resultado_modo
     if isinstance(resultado_modo, tuple): num_agents_procedural = resultado_modo[1]
-    
     modo_str = "Interativo" if MODO_ESCOLHIDO == '1' else f"Procedural ({num_agents_procedural} Ags)"
     LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), modo_str, "INICIO_SESSAO", f"Res={ROWS}"])
-
     grid, start_cell, end_cell, running = make_grid(ROWS, width), None, None, False
     
     if MODO_ESCOLHIDO == '2':
         for _ in range(300): get_random_pos(grid).make_barrier()
+        for row in grid:
+            for spot in row: spot.update_neighbors(grid)
         all_agents = generate_random_agents(grid, num_agents_procedural)
         running = True
-        LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), modo_str, "GERAR_PROCEDURAL", f"{num_agents_procedural} agentes"])
+        LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), modo_str, "GERAR_PROCEDURAL", f"{len(all_agents)} agentes"])
         
     while True:
         draw(win, grid, ROWS, width) 
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 save_session_log(LOG)
-                pygame.quit(); sys.exit()
+                pygame.quit(); sys.exit() 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
                 start_cell, end_cell, all_agents, running, grid = None, None, [], False, make_grid(ROWS, width)
                 LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, "LIMPAR_GRID", "C"])
+                
                 if MODO_ESCOLHIDO == '2':
                     for _ in range(300): get_random_pos(grid).make_barrier()
+                    for row in grid:
+                        for spot in row: spot.update_neighbors(grid)
+                        
                     all_agents = generate_random_agents(grid, num_agents_procedural)
                     running = True
+            
             if MODO_ESCOLHIDO == '1' and not running:
-                if pygame.mouse.get_pressed()[0] and pygame.mouse.get_pos()[1] < WIDTH: # log de cliques
+                # clique esquerdo: origem, destino, barreira
+                if pygame.mouse.get_pressed()[0] and pygame.mouse.get_pos()[1] < WIDTH: 
                     r, c = get_clicked_pos(pygame.mouse.get_pos(), ROWS, width); cell = grid[r][c]    
                     acao = "Barreira"
                     if not start_cell and not cell.is_end(): start_cell = cell; start_cell.make_start(BLUE); acao = "Start"
                     elif not end_cell and not cell.is_start(): end_cell = cell; end_cell.make_end(YELLOW); acao = "End"
                     elif not cell.is_end() and not cell.is_start(): cell.make_barrier()
                     LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, f"CLIQUE_ESQUERDO", f"{acao} @({r},{c})"])
+                    for row in grid:
+                        for spot in row: spot.update_neighbors(grid)
+                
+                # clique direito: remove
                 elif pygame.mouse.get_pressed()[2] and pygame.mouse.get_pos()[1] < WIDTH:
                     r, c = get_clicked_pos(pygame.mouse.get_pos(), ROWS, width); cell = grid[r][c]
                     if cell.color != WHITE:
@@ -295,30 +327,45 @@ def main(win, width):
                     cell.reset()
                     if cell == start_cell: start_cell = None
                     elif cell == end_cell: end_cell = None
+                    for row in grid:
+                        for spot in row: spot.update_neighbors(grid)
+                
                 # espaço: 1 agente
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and start_cell and end_cell:
                     for r_ in grid:
                         for s_ in r_:
-                            if s_.color not in [BLACK, BLUE, PURPLE]: s_.reset()
+                            if s_.color not in [BLACK, BLUE, YELLOW]: s_.reset()
                     single_agent = Agente(start_cell, end_cell, PURPLE, True); all_agents = [single_agent] 
-                    for r_ in grid:
-                        for s_ in r_: s_.update_neighbors(grid)
-                    if single_agent.find_path(grid): running = True
+                    
+                    if single_agent.find_path(grid): 
+                        running = True
+                        for r_ in grid:
+                            for s_ in r_:
+                                if s_.color in [RED, GREEN]: s_.reset()
+
                     LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, "RUN_1_AGENTE", f"Start:({start_cell.row},{start_cell.col})"])
-                # G: múltiplos agentes
+                
+                # g: múltiplos agentes 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_g: 
                     for r_ in grid:
                         for s_ in r_:
                             if s_.color not in [BLACK]: s_.reset()
                     start_cell, end_cell = None, None
                     num_agentes_interativo = get_user_input(win, width, "Número de agentes: (Enter)")
+                    
+                    for row in grid:
+                        for spot in row: spot.update_neighbors(grid)
+                        
                     all_agents = generate_random_agents(grid, num_agentes_interativo)
                     running = True
-                    LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, "RUN_MULTI_AGENTE", f"{num_agentes_interativo} agentes"])      
+                    LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, "RUN_MULTI_AGENTE", f"{len(all_agents)} agentes"])      
+        
         if running and all_agents:
             all_finished = True
             for agent in all_agents:
-                if agent.running: agent.move(); all_finished = False
+                if agent.running: 
+                    agent.move(); 
+                    all_finished = False
             if all_finished: 
                 running = False
                 LOG.append([time.strftime("%Y-%m-%d %H:%M:%S"), MODO_ESCOLHIDO, "FIM_MOVIMENTO", f"{len(all_agents)} agentes"]) 
