@@ -1,7 +1,9 @@
 # Análise dos gráficos gerados
 ## Resumo
 Ao comparar a execução dos dois algoritmos de busca, pode-se notar a diferença das velocidades, mesmo aplicando a mesma lógica de mudança de velocidade aleatória de agentes para ambos. O algoritmo A* percorre o caminho de origem a destino com muito mais rapidez que o DFS, considerando que não percorre uma quantidade considerável de nós, por buscar a eficiência. Além da rapidez, é notável a maior latência de processamento do algoritmo DFS, também reafirmada por sua maior expansão de caminhos. Nos próximos trabalhos irei focar as execuções em A* por melhor otimização.
+
 Ao se tratar da diferença de geometria dos grids, a diferência é irrisória, logo ambos são boas opções de geometria para futuras aplicações.
+
 Abaixo estão os gráficos plotados com base no arquivo log gerado por cada diferente execução.
 
 ### A* em grid retangular
