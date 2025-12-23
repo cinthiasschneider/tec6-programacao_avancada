@@ -5,6 +5,7 @@
 
 
 ## A* em grid hexagonal
+<img width="1984" height="572" alt="image" src="https://github.com/user-attachments/assets/75354bdc-4f54-44c9-8c5b-47e0e58dc43f" />
 
 
 ## DFS em grid retangular
@@ -13,4 +14,3 @@
 
 
 ## DFS em grid hexagonal
-<img width="1984" height="572" alt="image" src="https://github.com/user-attachments/assets/75354bdc-4f54-44c9-8c5b-47e0e58dc43f" />
