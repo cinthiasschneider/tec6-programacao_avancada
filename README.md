@@ -12,6 +12,6 @@
 | 07 | 25/11 23:59 | 25/11/2025 15:30 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho7) | Sim |
 | 08 | 02/12 23:59 | 02/12/2025 21:36 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho8) | Sim |
 | 09 | 16/12 23:59 | 08/12/2025 16:04 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho9) | Sim |
-| 10 | 23/12 23:59 | preencher | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho10) | preencher |
+| 10 | 23/12 23:59 | 23/12/2025 16:44 | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho10) | Sim |
 | 11 | 03/02 23:59 | preencher | [Link](https://github.com/cinthiasschneider/tec6-programacao_avancada/tree/main/trabalho11) | preencher |
 
