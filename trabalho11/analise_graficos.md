@@ -1,5 +1,10 @@
 # Análise dos gráficos gerados
 ## Resumo:
+Ao gerar gráficos de desempenho referentes aos três tipos de navegação, é possível perceber que tanto a navegação com comunicação direta quanto a sem comunicação possuem tamanho de caminho e tempo de execução bastante similares, mesmo se tratando de abordagem bastante distintas. Porém, é possível apontar que a melhor opção ao observar o custo computacional, a navegação sem comunicação utilizando o algoritmo ORCA. 
+
+Por outro lado, considerando o custo computacional dos algoritmos, é evidente que a navegação com comunicação indireta teria o menor valor por se tratar de uma opção mais simples; mesmo assim, acaba tendo caminho e tempo de execução consideravelmente maiores que as outras duas abordagens.
+
+Portanto, mesmo sendo necessário aplicar um algoritmo externo ao código base, o método de navegação sem comunicação entre os agentes é o mais adequado levando em consideração o desempenho e a qualidade da abordagem.
 
 
 ## Gráficos
