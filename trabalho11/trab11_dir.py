@@ -711,7 +711,8 @@ def generate_random_agents(grid, num_agents, factory, algorithm_factory):
 # função main
 def main(win, width):
     global MODO_ESCOLHIDO, num_agents_procedural, ALGORITHM_CHOICE, GRID_GEOMETRY
-    manager = ExecutionManager(); manager.initialize(win, width)
+    manager = ExecutionManager()
+    manager.initialize(win, width)
     
     geometria_handler = GeometriaHandler()
     modo_handler = ModoHandler()
@@ -723,7 +724,9 @@ def main(win, width):
         factories = {'ASTAR': manager.astar_factory, 'DFS': manager.dfs_factory, 'DIJKSTRA': manager.dijkstra_factory}
         
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: pygame.quit(); sys.exit() 
+            if event.type == pygame.QUIT: 
+                pygame.quit()
+                sys.exit() 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a: ALGORITHM_CHOICE = 'ASTAR'
                 elif event.key == pygame.K_d: ALGORITHM_CHOICE = 'DFS'
