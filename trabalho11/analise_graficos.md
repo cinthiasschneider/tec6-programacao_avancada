@@ -1,16 +1,17 @@
-# ANÁLISE DE GRÁFICOS GERADOS
+# Análise dos gráficos gerados
 ## Resumo:
 
 
-### Navegação com comunicação direta
-<img width="1984" height="572" alt="image" src="https://github.com/user-attachments/assets/b1831604-789a-4a23-b12e-32d1e541cd21" />
+## Gráficos
+### Tamanho médio do caminho
+<img width="1006" height="557" alt="image" src="https://github.com/user-attachments/assets/84e7542b-f832-4882-b858-bd65b5999ca3" />
 
 
 
-### Navegação com comunicação indireta
-<img width="1984" height="572" alt="image" src="https://github.com/user-attachments/assets/e53e8f04-d23a-4e7d-875b-a2fd400b02b4" />
+### Distribuição do tempo de execução em milissegundos
+<img width="1006" height="557" alt="image" src="https://github.com/user-attachments/assets/7c9493c8-8342-4f43-92bd-6c12121b8660" />
 
 
 
-### Navegação sem comunicação (ORCA)
-<img width="1984" height="572" alt="image" src="https://github.com/user-attachments/assets/88792bc0-87d6-435a-b28d-abddfd5c6163" />
+### Total de nós explorados - Custo computacional
+<img width="1045" height="558" alt="image" src="https://github.com/user-attachments/assets/0afaed39-ba6d-4dd1-8eac-357e546cd8e0" />
