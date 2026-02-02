@@ -706,7 +706,8 @@ def generate_random_agents(grid, num_agents, factory, algorithm_factory):
 # função main
 def main(win, width):
     global MODO_ESCOLHIDO, num_agents_procedural, ALGORITHM_CHOICE, GRID_GEOMETRY
-    manager = ExecutionManager(); manager.initialize(win, width)
+    manager = ExecutionManager()
+    manager.initialize(win, width)
     
     geometria_handler = GeometriaHandler()
     modo_handler = ModoHandler()
